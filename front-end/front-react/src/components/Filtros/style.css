@@ -1,0 +1,124 @@
+.container-filters {
+    background: #FAFAFA;
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 27px 26px 24px 42px;
+}
+
+.week-category-value {
+    width: 208px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+}
+
+.week-category-value span {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #B9B9B9;
+    margin-bottom: 20px;
+}
+
+.filters-list {
+    height: 138px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    box-sizing: border-box;
+    padding-right: 40px;
+    gap: 12px;
+
+    border-right: 1px solid #EAEAEA;
+}
+
+.container-chip {
+    border: none;
+    max-width: 90px;
+
+    /* background: #FAFAFA; */
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 10px;
+    line-height: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 10px;
+
+    color: #000000;
+}
+
+/* .container-chip:focus {
+    background: #7B61FF;
+} */
+
+.values-label {
+    font-family: 'Rubik', sans-serif;
+    font-size: 9px;
+    line-height: 11px;
+    color: #484848;
+    margin-bottom: 2px;
+}
+
+.values-input {
+    all: unset;
+    width: 65px;
+    height: 22px;
+
+    background: #FFFFFF;
+    border: 1px solid #7B61FF;
+    box-sizing: border-box;
+    border-radius: 2px;
+
+    padding: 5px;
+    margin-bottom: 14px;
+}
+
+.btn-filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.btn-clear-filters {
+    width: 98px;
+    height: 30px;
+
+    border: none;
+    background: #FAFAFA;
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 14px;
+    color: #000000;
+}
+
+.btn-aplly-filters {
+    width: 98px;
+    height: 30px;
+
+    border: none;
+    background: linear-gradient(264.83deg, #3A9FF1 -3.28%, #05EDE3 100%);
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 14px;
+    color: #FFFFFF;
+}

@@ -1,0 +1,131 @@
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(61, 61, 61, 0.48);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container {
+    box-sizing: border-box;
+    width: 611px;
+    padding: 62px;
+    display: flex;
+    overflow: scroll;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 20px;
+    margin: 80px;
+}
+
+.modal-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 111px;
+
+    font-family: 'Rubik',sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 43px;
+    color: #000000;
+
+    margin-bottom: 52px;
+}
+
+.modal-record {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 38px;
+}
+
+.credit {
+    width: 245px;
+    height: 56px;
+
+    /* background: #B9B9B9; */
+    border: none;
+    border-radius: 10px 0px 0px 10px;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}
+
+/* .credit:focus {
+    background: linear-gradient(91.26deg, #05EDE3 0%, #3A9FF1 97.77%);
+} */
+
+.debit {
+    width: 245px;
+    height: 56px;
+
+    /* background: #B9B9B9; */
+    border: none;
+    border-radius: 0px 10px 10px 0px;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}
+
+/* .debit:focus {
+    background: linear-gradient(91.66deg, #FA8C10 0%, #FF576B 90.32%);
+} */
+
+.modal-form {
+    margin-bottom: 43px;
+}
+
+.modal-label {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: #484848;
+    margin-bottom: 8px;
+}
+
+.modal-input {
+    all: unset;
+    width: 485px;
+    height: 64px;
+
+    background: #FFFFFF;
+    border: 1px solid #555555;
+    box-sizing: border-box;
+    border-radius: 5px;
+
+    padding: 20px;
+    margin-bottom: 26px;
+}
+
+.modal-input:focus {
+    border: 2px solid #7B61FF;
+}
+
+.btn-insert {
+    width: 236px;
+    height: 42px;
+
+    border: none;
+    background: #645FFB;
+    border-radius: 5px;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}

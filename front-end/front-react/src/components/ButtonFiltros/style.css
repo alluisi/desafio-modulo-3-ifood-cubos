@@ -1,0 +1,19 @@
+.open-filters-button {
+    width: 80px;
+    height: 30px;
+    background: #FAFAFA;
+    border: none;
+    box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px 15px;
+
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 14px;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+}

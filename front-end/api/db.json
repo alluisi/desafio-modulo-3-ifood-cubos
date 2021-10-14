@@ -1,0 +1,31 @@
+{
+  "transactions": [
+    {
+      "date": "2021-09-15T03:00:00.000Z",
+      "week_day": "quarta",
+      "description": "Venda de carro.",
+      "value": 15000,
+      "category": "Vendas",
+      "type": "credit",
+      "id": 1
+    },
+    {
+      "date": "2021-10-18T04:00:00.000Z",
+      "week_day": "Segunda",
+      "description": "freela",
+      "value": 64000,
+      "category": "serviço",
+      "type": "credit",
+      "id": 4
+    },
+    {
+      "date": "2021-10-13T04:00:00.000Z",
+      "week_day": "Quarta",
+      "description": "mercado",
+      "value": 10000,
+      "category": "compras",
+      "type": "debit",
+      "id": 5
+    }
+  ]
+}

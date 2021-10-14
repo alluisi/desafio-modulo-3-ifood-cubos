@@ -1,0 +1,27 @@
+.container-header {
+    position: absolute;
+    width: 100vw;
+    height: 224px;
+    left: 0px;
+    right: 0px;
+    top: -2px;
+    display: flex;
+    background: linear-gradient(90.23deg, #05EDE3 0.02%, #645FFB 99.63%);
+}
+
+.logo {
+    position: absolute;
+    left: 100px;
+    top: 39px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo span {
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 43px;
+    color: #FFFFFF;
+}
