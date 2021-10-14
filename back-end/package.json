@@ -1,0 +1,27 @@
+{
+  "name": "back-integral-desafio-m03",
+  "version": "1.0.0",
+  "description": "![](https://i.imgur.com/xG74tOh.png)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alluisi/back-integral-desafio-m03.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alluisi/back-integral-desafio-m03/issues"
+  },
+  "homepage": "https://github.com/alluisi/back-integral-desafio-m03#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.13",
+    "pg": "^8.7.1"
+  }
+}
