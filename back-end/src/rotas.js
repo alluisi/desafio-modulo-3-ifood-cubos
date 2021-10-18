@@ -24,6 +24,7 @@ rotas.use(verificaToken);
 
 rotas.get('/usuario', detalharUsuario);
 rotas.put('/usuario', atualizarusuario);
+
 rotas.get('/produtos', listarProdutos);
 rotas.get('/produtos/:id', detalharUmProduto);
 rotas.post('/produtos', cadastrarProduto);

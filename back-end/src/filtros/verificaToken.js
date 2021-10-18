@@ -32,14 +32,17 @@ const verificaToken = async (req, res, next) => {
             error.message === 'jwt malformed' ||
             error.message === 'invalid signature'
         ) {
-            res.status(401).json('O token informado não é válido');
-            return;
+            return res.status(401).json('O token informado não é válido');
         }
 
-        if (error.message === 'jwt must be provided') {
-            res.status(401).json({ mensagem: 'Para acessar este recurso um token de autenticação válido deve ser enviado.' });
-            return;
+        if (error.message === 'jwt must be provided' ||
+            error.message === 'JsonWebTokenError' ||
+            error.message === 'TokenExpiredError'
+        ) {
+            return res.status(401).json({ mensagem: 'Para acessar este recurso um token de autenticação válido deve ser enviado.' });
         }
+
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 

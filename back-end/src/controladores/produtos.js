@@ -8,8 +8,7 @@ const listarProdutos = async (req, res) => {
 
         return res.status(200).json({ mensagem: produtos.rows });
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -31,8 +30,7 @@ const detalharUmProduto = async (req, res) => {
 
         return res.status(200).json({ mensagem: produto.rows[0] });
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -68,10 +66,9 @@ const cadastrarProduto = async (req, res) => {
             return res.status(400).json({ mensagem: 'Não foi possível cadastrar o produto.' });
         }
 
-        return res.status(201).json();
+        return res.status(201).send();
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -112,17 +109,16 @@ const atualizarProduto = async (req, res) => {
             return res.status(403).json({ mensagem: "O usuário logado não tem permissão para acessar este produto." });
         }
 
-        const queryAtualizacao = 'update produtos set nome = $1, quantidade = $2, categoria = $3, preco = $4, descricao = $5, imagem = $6 where usuario_id = $7';
-        const ProdutoAtualizado = await conexao.query(queryAtualizacao, [nome, quantidade, categoria, preco, descricao, imagem, usuario.id]);
+        const queryAtualizacao = 'update produtos set nome = $1, quantidade = $2, categoria = $3, preco = $4, descricao = $5, imagem = $6 where id = $7';
+        const ProdutoAtualizado = await conexao.query(queryAtualizacao, [nome, quantidade, categoria, preco, descricao, imagem, id]);
 
         if (ProdutoAtualizado.rowCount === 0) {
             return res.status(400).json({ mensagem: 'Não foi possível atualizar o produto.' });
         }
 
-        return res.status(201).json();
+        return res.status(204).send();
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -149,10 +145,9 @@ const excluirProduto = async (req, res) => {
             return res.status(400).json({ mensagem: 'Não foi possível excluir o produto.' });
         }
 
-        return res.status(201).json();
+        return res.status(204).send();
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -161,14 +156,13 @@ const filtrarProdutoPorCategoria = async (req, res) => {
     const { usuario } = req;
 
     try {
-        const query = 'select * from produtos where categoria = $1 and usuario_id = $2';
-        const produto = await conexao.query(query, [categoria, usuario.id]);
+        const query = 'select * from produtos where usuario_id = $1 and categoria ilike $2';
+        const produto = await conexao.query(query, [usuario.id, `%${categoria}%`]);
 
         return res.status(200).json(produto.rows);
 
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 

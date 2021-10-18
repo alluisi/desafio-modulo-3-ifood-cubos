@@ -34,13 +34,12 @@ const cadartrarUsuario = async (req, res) => {
         const usuarioCadastrado = await conexao.query(query, [nome, email, senhaCriptografada, nome_loja]);
 
         if (usuarioCadastrado.rowCount === 0) {
-            return res.status(400).json({ mensagem: 'Não foi possível cadastrar o usuário.' });
+            return res.status(500).json({ mensagem: 'Não foi possível cadastrar o usuário.' });
         }
 
-        return res.status(201).json();
+        return res.status(201).send();
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -48,14 +47,9 @@ const detalharUsuario = async (req, res) => {
     const { usuario } = req;
 
     try {
-        await conexao.query("select * from usuarios where id = $1", [
-            usuario.id
-        ]);
-        const { senha, ...perfilExibido } = usuario;
-        return res.status(200).json({ mensagem: perfilExibido });
+        return res.status(200).json(usuario);
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 
@@ -96,10 +90,9 @@ const atualizarusuario = async (req, res) => {
             return res.status(400).json({ mensagem: 'Não foi possível atualizar o usuário.' });
         }
 
-        return res.status(201).json();
+        return res.status(204).send();
     } catch (error) {
-        res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
-        return;
+        return res.status(500).json({ mensagem: "Ocorreu um erro inesperado. - " + error.message });
     }
 }
 

@@ -15,9 +15,9 @@ create table if not exists produtos (
   id serial primary key,
   usuario_id integer not null,
   nome text not null,
-  quantidade int not null,
+  quantidade integer not null,
   categoria text,
-  preco int not null,
+  preco integer not null,
   descricao text not null,
   imagem text,
   foreign key (usuario_id) references usuarios (id)
