@@ -22,7 +22,7 @@
 }
 
 .space {
-    min-width: 100px;
+    width: 150px;
 
     display: flex;
     justify-content: center;
@@ -59,13 +59,11 @@
 }
 
 .table-body {
-    max-width: 964px;
     display: flex;
     flex-direction: column;
 }
 
 .table-line {
-    max-width: 964px;
     height: 40px;
     padding: 20px;
     gap: 50px;
@@ -161,8 +159,4 @@
     font-size: 9px;
     line-height: 11px;
     color: #FFFFFF;
-}
-
-.hidden {
-    display: none;
 }

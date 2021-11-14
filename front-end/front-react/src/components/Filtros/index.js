@@ -1,6 +1,7 @@
 import './style.css';
-import soma from '../../assets/soma.svg';
-import { useEffect, useRef, useState } from 'react';
+import acrescenta from '../../assets/acrescenta.svg';
+import exclui from '../../assets/exclui.svg';
+import { useEffect, useState } from 'react';
 
 const Filtros = ({
     transactionsData,
@@ -8,29 +9,65 @@ const Filtros = ({
     loadTransaction,
     loadTransactions
 }) => {
-    const diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const diasDaSemana = [
+        {
+            nome: 'Domingo',
+            selecionado: false
+        },
+        {
+            nome: 'Segunda',
+            selecionado: false
+        },
+        {
+            nome: 'Terça',
+            selecionado: false
+        },
+        {
+            nome: 'Quarta',
+            selecionado: false
+        },
+        {
+            nome: 'Quinta',
+            selecionado: false
+        },
+        {
+            nome: 'Sexta',
+            selecionado: false
+        },
+        {
+            nome: 'Sábado',
+            selecionado: false
+        }
+    ];
+
     const [categorias, setCategorias] = useState([]);
     const [valorMinimo, setValorMinimo] = useState('');
     const [valorMaximo, setValorMaximo] = useState('');
     const [filtroAplicado, setFiltroAplicado] = useState(false);
-    const [selecionado, setSelecionado] = useState(true);
-    const [keyDiaDaSema, setKeyDiaDaSemana] = useState({ selecionar: selecionado, key: '' });
-    const [keyCategoria, setKeyCategoria] = useState('');
-    const categoriasRef = useRef([]);
+    const [diaDaSemana, setDiaDaSemana] = useState(diasDaSemana);
+    const [transactionsDataAfterFilter, setTransactionsDataAfterFilter] = useState(transactionsData);
 
     useEffect(() => {
         async function listarCategorias() {
-            let listaDasCategorias = [];
-            transactionsData.map((transaction) => {
-                categoriasRef.current = transaction.category;
-                listaDasCategorias = [categoriasRef.current, ...listaDasCategorias];
-            });
+            const listaTodasCategorias = [];
+            for (const transaction of transactionsData) {
+                listaTodasCategorias.push({
+                    nome: transaction.category,
+                    selecionado: false
+                })
+            };
 
-            const semRepetidos = listaDasCategorias.filter((categoria, indice) => {
-                return listaDasCategorias.indexOf(categoria) === indice;
-            });
+            const idCategorias = [];
+            const semCategoriasRepetidas = [];
 
-            setCategorias(semRepetidos);
+            for (const categoria of listaTodasCategorias) {
+                if (idCategorias.indexOf(categoria.nome) === -1) {
+                    idCategorias.push(categoria.nome);
+                    semCategoriasRepetidas.push(categoria);
+                }
+            };
+
+            setCategorias(semCategoriasRepetidas);
         }
         listarCategorias()
     }, [loadTransaction, filtroAplicado]);
@@ -38,66 +75,100 @@ const Filtros = ({
     function limparFiltros() {
         setValorMinimo('');
         setValorMaximo('');
-        setKeyDiaDaSemana('');
-        setKeyCategoria('');
+        setDiaDaSemana(diasDaSemana);
+        setFiltroAplicado(!filtroAplicado);
         loadTransactions();
     }
 
-    // FILTRO EXTRA INACABADO
-    const selecionarFiltroSemana = (indice) => {
+    const selecionarFiltroSemana = (nome) => {
+        const listaDosDias = [...diaDaSemana];
 
-        if (keyDiaDaSema.key === indice) {
-            setSelecionado(false)
-        } else {
-            setSelecionado(true)
+        const diasSelecionados = listaDosDias.find((dia) => dia.nome === nome);
+        diasSelecionados.selecionado = !diasSelecionados.selecionado;
+
+        setDiaDaSemana(listaDosDias);
+    }
+
+
+    const selecionarFiltroCategoria = (nome) => {
+        const listaDascategorias = [...categorias];
+
+        const categoriasSelecionadas = listaDascategorias.find((categoria) => categoria.nome === nome);
+        categoriasSelecionadas.selecionado = !categoriasSelecionadas.selecionado;
+
+        setCategorias(listaDascategorias);
+    }
+
+    function aplicarFiltros() {
+        const diasFiltrados = filtrarDiasDaSemana();
+        const categoriasFiltradas = filtrarCategorias();
+
+        filtrarValor()
+        setFiltroAplicado(!filtroAplicado);
+    }
+
+    function filtrarDiasDaSemana() {
+        const diasSelecionados = diaDaSemana.filter((dia) => dia.selecionado);
+
+        const diasFiltrados = [];
+        for (const dia of diasSelecionados) {
+            diasFiltrados.push(dia.nome);
         }
 
-        setKeyDiaDaSemana({ selecionar: selecionado, key: indice });
-        // console.log(keyDiaDaSema.selecionar)
+        return diasFiltrados;
     }
 
-    // FILTRO EXTRA INACABADO
-    const selecionarFiltroCategoria = (indice) => {
-        setKeyCategoria(indice);
+    function filtrarCategorias() {
+        const categoriasSelecionadas = categorias.filter((categoria) => categoria.selecionado);
+
+        const categoriaFiltrada = [];
+        for (const categoria of categoriasSelecionadas) {
+            categoriaFiltrada.push(categoria.nome);
+        }
+
+        return categoriaFiltrada;
     }
+
+    useEffect(() => {
+        async function loadTransactionsAfterFilter() {
+            try {
+            const response = await fetch('http://localhost:3333/transactions', {
+                method: 'GET'
+            });
+    
+            const data = await response.json();
+    
+            setTransactionsDataAfterFilter(data);
+
+            } catch (error) {
+            console.log(error);
+            }
+        }
+    }, [filtroAplicado]);
 
     function filtrarValor() {
         if (!valorMinimo && !valorMaximo) {
             return;
         }
-        setTransactionsData(estado => {
-            const arrayDoEstado = [...estado];
-            const arrayDoEstadoFiltrado = arrayDoEstado.filter((x) => {
-                let valor = x.value;
-                if (x.type === 'debit') {
-                    valor = valor * -1;
-                }
 
-                if (!valorMinimo) {
-                    if (valor <= (valorMaximo * 100)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
+        const arrayDoEstado = [...transactionsDataAfterFilter];
+        const arrayDoEstadoFiltrado = arrayDoEstado.filter((x) => {
+            let valor = x.value;
+            if (x.type === 'debit') {
+                valor = valor * -1;
+            }
 
-                if (!valorMaximo) {
-                    if (valor >= (valorMinimo * 100)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
+            if (!valorMinimo) {
+                return valor <= (valorMaximo * 100) ? true : false;
+            }
 
-                if (valor >= (valorMinimo * 100) && valor <= (valorMaximo * 100)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-            return arrayDoEstadoFiltrado
+            if (!valorMaximo) {
+                return valor >= (valorMinimo * 100) ? true : false;
+            }
+
+            return valor >= (valorMinimo * 100) && valor <= (valorMaximo * 100) ? true : false;
         });
-        setFiltroAplicado(!filtroAplicado);
+        setTransactionsData(arrayDoEstadoFiltrado);
     }
 
     return (
@@ -105,16 +176,20 @@ const Filtros = ({
             <div className='week-category-value'>
                 <span>Dia da semana</span>
                 <div className='filters-list'>
-                    {diasDaSemana.map((dia, indice) => {
+                    {diaDaSemana.map((dia) => {
                         return (
                             <button
                                 className='container-chip'
-                                key={indice}
-                                style={keyDiaDaSema.selecionar && keyDiaDaSema.key === indice ? { background: '#7B61FF' } : { background: '#FAFAFA' }}
-                                onClick={() => selecionarFiltroSemana(indice)}
+                                key={dia.nome}
+                                style={
+                                    dia.selecionado ?
+                                        { background: '#7B61FF', color: '#FAFAFA' } :
+                                        { background: '#FAFAFA', color: '#000000' }
+                                }
+                                onClick={() => selecionarFiltroSemana(dia.nome)}
                             >
-                                {dia}
-                                <img className='icon-filter' src={soma} alt='soma' />
+                                {dia.nome}
+                                <img className='icon-filter' src={dia.selecionado ? exclui : acrescenta} alt='botão' />
                             </button>
                         )
                     })}
@@ -123,16 +198,20 @@ const Filtros = ({
             <div className='week-category-value'>
                 <span>Categoria</span>
                 <div className='filters-list'>
-                    {categorias.map((categoria, indice) => {
+                    {categorias.map((categoria) => {
                         return (
                             <button
                                 className='container-chip'
-                                key={indice}
-                                style={keyCategoria === indice ? { background: '#7B61FF' } : { background: '#FAFAFA' }}
-                                onClick={() => selecionarFiltroCategoria(indice)}
+                                key={categoria.nome}
+                                style={
+                                    categoria.selecionado ?
+                                        { background: '#7B61FF', color: '#FAFAFA' } :
+                                        { background: '#FAFAFA', color: '#000000' }
+                                }
+                                onClick={() => selecionarFiltroCategoria(categoria.nome)}
                             >
-                                {categoria}
-                                <img className='icon-filter' src={soma} alt='soma' />
+                                {categoria.nome}
+                                <img className='icon-filter' src={categoria.selecionado ? exclui : acrescenta} alt='botão' />
                             </button>
                         )
                     })}
@@ -172,7 +251,7 @@ const Filtros = ({
                 </button>
                 <button
                     className='btn-aplly-filters'
-                    onClick={() => filtrarValor()}
+                    onClick={() => aplicarFiltros()}
                 >Aplicar Filtros</button>
             </div>
         </div>

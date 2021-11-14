@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 .modal-container {
@@ -15,7 +16,6 @@
     width: 611px;
     padding: 62px;
     display: flex;
-    overflow: scroll;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -50,7 +50,6 @@
     width: 245px;
     height: 56px;
 
-    /* background: #B9B9B9; */
     border: none;
     border-radius: 10px 0px 0px 10px;
 
@@ -61,15 +60,10 @@
     color: #FFFFFF;
 }
 
-/* .credit:focus {
-    background: linear-gradient(91.26deg, #05EDE3 0%, #3A9FF1 97.77%);
-} */
-
 .debit {
     width: 245px;
     height: 56px;
 
-    /* background: #B9B9B9; */
     border: none;
     border-radius: 0px 10px 10px 0px;
 
@@ -79,10 +73,6 @@
     line-height: 17px;
     color: #FFFFFF;
 }
-
-/* .debit:focus {
-    background: linear-gradient(91.66deg, #FA8C10 0%, #FF576B 90.32%);
-} */
 
 .modal-form {
     margin-bottom: 43px;

@@ -35,30 +35,31 @@ function App() {
     <div className="App">
       <Header />
       <div className='container-body'>
-        <ButtonFiltros
-          filtro={filtro}
-          setFiltro={setfiltro}
-        />
-        <div className='direction-row'>
-          <div className='direction-column'>
-            {
-              filtro && (
-                <Filtros
-                  transactionsData={transactionsData}
-                  setTransactionsData={setTransactionsData}
-                  loadTransaction={loadTransaction}
-                  loadTransactions={loadTransactions}
-                />
-              )}
-            <ListaTransacoes
-              transactionsData={transactionsData}
-              setTransactionsData={setTransactionsData}
-              loadTransactions={loadTransactions}
-              transactionInEditing={transactionInEditing}
-              setTransactionInEditing={setTransactionInEditing}
-              setModal={setModal}
-            />
-          </div>
+        <div className='container-left'>
+          <ButtonFiltros
+            filtro={filtro}
+            setFiltro={setfiltro}
+          />
+          {
+            filtro && (
+              <Filtros
+                transactionsData={transactionsData}
+                setTransactionsData={setTransactionsData}
+                loadTransaction={loadTransaction}
+                loadTransactions={loadTransactions}
+              />
+            )}
+          <ListaTransacoes
+            transactionsData={transactionsData}
+            setTransactionsData={setTransactionsData}
+            loadTransactions={loadTransactions}
+            transactionInEditing={transactionInEditing}
+            setTransactionInEditing={setTransactionInEditing}
+            setModal={setModal}
+          />
+        </div>
+        <div className='container-right'>
+          <div className='adjust-layout'></div>
           <Resumo
             setModal={setModal}
             setEntradaOuSaida={setEntradaOuSaida}
@@ -78,7 +79,7 @@ function App() {
             setTransactionInEditing={setTransactionInEditing}
           />)
       }
-    </div>
+    </div >
   );
 }
 

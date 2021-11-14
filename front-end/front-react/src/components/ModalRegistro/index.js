@@ -3,7 +3,6 @@ import fechar from '../../assets/fechar.svg';
 import { useEffect, useState } from 'react';
 import InputMask from 'react-input-mask';
 import { format } from 'date-fns';
-// import NumberFormat from 'react-number-format'; (Valor monetário)
 
 const ModalRegistro = ({
     setModal,
@@ -32,17 +31,18 @@ const ModalRegistro = ({
 
         try {
             const dataCorrigida = dataInput.substr(3, 2) + '/' + dataInput.substr(0, 2) + '/' + dataInput.substr(6, 4);
-            const dataFormatada = new Date(`${dataCorrigida} 01:00`).toISOString();
+            const dataFormatada = new Date(dataCorrigida).toISOString();
             const numeroDoDiaDaSemana = new Date(dataCorrigida).getDay();
             const diaDaSemana = diasDaSemana[numeroDoDiaDaSemana];
             const valorFormatado = valor * 100;
+            const categoriaCorrigida = categoria.toLowerCase();
 
             const data = {
                 date: dataFormatada,
                 week_day: diaDaSemana,
                 description: descricao,
                 value: valorFormatado,
-                category: categoria,
+                category: categoriaCorrigida,
                 type: tipoDaTransação
             };
 
@@ -180,6 +180,7 @@ const ModalRegistro = ({
                         className='modal-input'
                         id='date'
                         name='date'
+                        type='text'
                         mask='99/99/9999'
                         onChange={(e) => setDataInput(e.target.value)}
                         value={dataInput}
