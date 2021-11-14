@@ -42,7 +42,6 @@
     border: none;
     max-width: 90px;
 
-    /* background: #FAFAFA; */
     box-shadow: 0px 2px 11px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 
@@ -55,13 +54,7 @@
     justify-content: space-between;
     gap: 12px;
     padding: 4px 10px;
-
-    color: #000000;
 }
-
-/* .container-chip:focus {
-    background: #7B61FF;
-} */
 
 .values-label {
     font-family: 'Rubik', sans-serif;

@@ -17,7 +17,7 @@ const ListaTransacoes = ({
 
     const [idDelete, setIdDelete] = useState('');
     const [crescente, setCrescente] = useState(true);
-    const [idCrescente, setIdCrescente] = useState('');
+    const [idCrescente, setIdCrescente] = useState('date');
 
     useEffect(() => {
         loadTransactions();
@@ -44,7 +44,24 @@ const ListaTransacoes = ({
         }
     }
 
-    function ordenarData(idSelect) {
+    useEffect(() => {
+        if (idCrescente === 'date') {
+            ordenarData();
+            return;
+        }
+
+        if (idCrescente === 'week-day') {
+            ordenarDiaDaSemana();
+            return;
+        }
+
+        if (idCrescente === 'value') {
+            ordenarValor();
+            return;
+        }
+    }, [crescente]);
+
+    function ordenarData() {
         setTransactionsData(estado => {
             const arrayDoEstado = [...estado];
             const arrayDoEstadoOrdenado = arrayDoEstado.sort((a, b) => {
@@ -56,17 +73,9 @@ const ListaTransacoes = ({
             });
             return arrayDoEstadoOrdenado
         });
-        setCrescente(estado => {
-            if (crescente) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-        setIdCrescente(idSelect);
     }
 
-    function ordenarDiaDaSemana(idSelect) {
+    function ordenarDiaDaSemana() {
         setTransactionsData(estado => {
             const arrayDoEstado = [...estado];
             const arrayDoEstadoOrdenado = arrayDoEstado.sort((a, b) => {
@@ -78,17 +87,9 @@ const ListaTransacoes = ({
             });
             return arrayDoEstadoOrdenado
         });
-        setCrescente(estado => {
-            if (crescente) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-        setIdCrescente(idSelect);
     }
 
-    function ordenarValor(idSelect) {
+    function ordenarValor() {
         setTransactionsData(estado => {
             const arrayDoEstado = [...estado];
             const arrayDoEstadoOrdenado = arrayDoEstado.sort((a, b) => {
@@ -100,14 +101,6 @@ const ListaTransacoes = ({
             });
             return arrayDoEstadoOrdenado
         });
-        setCrescente(estado => {
-            if (crescente) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-        setIdCrescente(idSelect);
     }
 
     return (
@@ -117,18 +110,24 @@ const ListaTransacoes = ({
                     <button
                         className='column-title'
                         id='date'
-                        onClick={() => ordenarData('date')}
+                        onClick={() => {
+                            setIdCrescente('date')
+                            setCrescente(!crescente)
+                        }}
                     >
-                        Data <img className={idCrescente === 'date' ? '' : 'hidden'} src={crescente ? setaParaBaixo : setaParaCima} alt='seta' />
+                        Data {idCrescente === 'date' && <img src={crescente ? setaParaBaixo : setaParaCima} alt='seta' />}
                     </button>
                 </div>
                 <div className='space'>
                     <button
                         className='column-title'
                         id='week-day'
-                        onClick={() => ordenarDiaDaSemana('week-day')}
+                        onClick={() => {
+                            setIdCrescente('week-day')
+                            setCrescente(!crescente)
+                        }}
                     >
-                        Dia da semana <img className={idCrescente === 'week-day' ? '' : 'hidden'} src={crescente ? setaParaBaixo : setaParaCima} alt='seta' />
+                        Dia da semana {idCrescente === 'week-day' && <img src={crescente ? setaParaBaixo : setaParaCima} alt='seta' />}
                     </button>
                 </div>
                 <div className='space'>
@@ -141,9 +140,12 @@ const ListaTransacoes = ({
                     <button
                         className='column-title'
                         id='value'
-                        onClick={() => ordenarValor('value')}
+                        onClick={() => {
+                            setIdCrescente('value')
+                            setCrescente(!crescente)
+                        }}
                     >
-                        Valor <img className={idCrescente === 'value' ? '' : 'hidden'} src={crescente ? setaParaBaixo : setaParaCima} alt='seta' />
+                        Valor {idCrescente === 'value' && <img src={crescente ? setaParaBaixo : setaParaCima} alt='seta' />}
                     </button>
                 </div>
                 <div className='space'></div>
@@ -166,7 +168,7 @@ const ListaTransacoes = ({
                         <div className='space'>
                             <span
                                 className='column-table'
-                                style={transaction.type === 'debit' ? { color: '#FA8C10' } : { color: '#7B61FF' }}
+                                style={{ color: transaction.type === 'debit' ? '#FA8C10' : '#7B61FF' }}
                             >
                                 {transaction.type === 'debit' ? `-${(transaction.value / 100).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}` : (transaction.value / 100).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                             </span>
@@ -185,20 +187,22 @@ const ListaTransacoes = ({
                                 className='delete-icon'
                                 onClick={() => abrirModalDelete(transaction.id)}
                             ><img src={lixo} alt='lixo' /></button>
-                            <div className={idDelete === transaction.id ? 'container-confirm-delete' : 'container-confirm-delete hidden'}>
-                                <img className='indicador' src={indicador} alt='indicaor' />
-                                <span className='action'>Apagar item?</span>
-                                <div className='btn-actions-confirm-delete'>
-                                    <button
-                                        className='btn-confirm'
-                                        onClick={() => handleDeletTransaction(transaction.id)}
-                                    >Sim</button>
-                                    <button
-                                        className='btn-delete'
-                                        onClick={() => setIdDelete('')}
-                                    >Não</button>
+                            {idDelete === transaction.id &&
+                                <div className='container-confirm-delete'>
+                                    <img className='indicador' src={indicador} alt='indicaor' />
+                                    <span className='action'>Apagar item?</span>
+                                    <div className='btn-actions-confirm-delete'>
+                                        <button
+                                            className='btn-confirm'
+                                            onClick={() => handleDeletTransaction(transaction.id)}
+                                        >Sim</button>
+                                        <button
+                                            className='btn-delete'
+                                            onClick={() => setIdDelete('')}
+                                        >Não</button>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 ))}

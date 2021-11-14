@@ -1,11 +1,11 @@
 {
   "transactions": [
     {
-      "date": "2021-09-15T03:00:00.000Z",
-      "week_day": "quarta",
-      "description": "Venda de carro.",
+      "date": "2021-09-15T04:00:00.000Z",
+      "week_day": "Quarta",
+      "description": "doces",
       "value": 15000,
-      "category": "Vendas",
+      "category": "vendas",
       "type": "credit",
       "id": 1
     },
@@ -26,6 +26,33 @@
       "category": "compras",
       "type": "debit",
       "id": 5
+    },
+    {
+      "date": "2021-09-25T04:00:00.000Z",
+      "week_day": "Sábado",
+      "description": "mercado",
+      "value": 20000,
+      "category": "compras",
+      "type": "debit",
+      "id": 6
+    },
+    {
+      "date": "2021-10-16T04:00:00.000Z",
+      "week_day": "Sábado",
+      "description": "freela",
+      "value": 200000,
+      "category": "trabalho",
+      "type": "credit",
+      "id": 7
+    },
+    {
+      "date": "2021-10-12T03:00:00.000Z",
+      "week_day": "Terça",
+      "description": "doces",
+      "value": 5000,
+      "category": "vendas",
+      "type": "debit",
+      "id": 8
     }
   ]
 }
