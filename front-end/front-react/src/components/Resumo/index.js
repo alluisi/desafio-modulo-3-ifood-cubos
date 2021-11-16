@@ -5,7 +5,6 @@ const Resumo = ({
     setModal,
     setEntradaOuSaida,
     transactionsData,
-    loadTransaction
 }) => {
 
     const [entradas, setEntradas] = useState(0);
@@ -33,7 +32,7 @@ const Resumo = ({
             setSaldo(somaDasEntradas - somaDasSaidas);
         }
         trazerDados()
-    }, [loadTransaction]);
+    }, [transactionsData]);
 
     return (
         <div className='resume'>

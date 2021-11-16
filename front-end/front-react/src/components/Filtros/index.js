@@ -47,39 +47,6 @@ const Filtros = ({
     const [diaDaSemana, setDiaDaSemana] = useState(diasDaSemana);
     const [transactionsDataAfterFilter, setTransactionsDataAfterFilter] = useState(transactionsData);
 
-    useEffect(() => {
-        async function listarCategorias() {
-            const listaTodasCategorias = [];
-            for (const transaction of transactionsData) {
-                listaTodasCategorias.push({
-                    nome: transaction.category,
-                    selecionado: false
-                })
-            };
-
-            const idCategorias = [];
-            const semCategoriasRepetidas = [];
-
-            for (const categoria of listaTodasCategorias) {
-                if (idCategorias.indexOf(categoria.nome) === -1) {
-                    idCategorias.push(categoria.nome);
-                    semCategoriasRepetidas.push(categoria);
-                }
-            };
-
-            setCategorias(semCategoriasRepetidas);
-        }
-        listarCategorias()
-    }, [loadTransaction, filtroAplicado]);
-
-    function limparFiltros() {
-        setValorMinimo('');
-        setValorMaximo('');
-        setDiaDaSemana(diasDaSemana);
-        setFiltroAplicado(!filtroAplicado);
-        loadTransactions();
-    }
-
     const selecionarFiltroSemana = (nome) => {
         const listaDosDias = [...diaDaSemana];
 
@@ -89,6 +56,31 @@ const Filtros = ({
         setDiaDaSemana(listaDosDias);
     }
 
+    useEffect(() => {
+        listarCategorias()
+    }, [transactionsData, filtroAplicado]);
+
+    async function listarCategorias() {
+        const listaTodasCategorias = [];
+        for (const transaction of transactionsData) {
+            listaTodasCategorias.push({
+                nome: transaction.category,
+                selecionado: false
+            })
+        };
+
+        const idCategorias = [];
+        const semCategoriasRepetidas = [];
+
+        for (const categoria of listaTodasCategorias) {
+            if (idCategorias.indexOf(categoria.nome) === -1) {
+                idCategorias.push(categoria.nome);
+                semCategoriasRepetidas.push(categoria);
+            }
+        };
+
+        setCategorias(semCategoriasRepetidas);
+    }
 
     const selecionarFiltroCategoria = (nome) => {
         const listaDascategorias = [...categorias];
@@ -99,12 +91,31 @@ const Filtros = ({
         setCategorias(listaDascategorias);
     }
 
-    function aplicarFiltros() {
-        const diasFiltrados = filtrarDiasDaSemana();
-        const categoriasFiltradas = filtrarCategorias();
-
-        filtrarValor()
+    function limparFiltros() {
+        setValorMinimo('');
+        setValorMaximo('');
+        setDiaDaSemana(diasDaSemana);
         setFiltroAplicado(!filtroAplicado);
+        loadTransactions();
+    }
+
+    useEffect(() => {
+        loadTransactionsAfterFilter();
+    }, [filtroAplicado]);
+
+    async function loadTransactionsAfterFilter() {
+        try {
+            const response = await fetch('http://localhost:3333/transactions', {
+                method: 'GET'
+            });
+
+            const data = await response.json();
+
+            setTransactionsDataAfterFilter(data);
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     function filtrarDiasDaSemana() {
@@ -115,7 +126,16 @@ const Filtros = ({
             diasFiltrados.push(dia.nome);
         }
 
-        return diasFiltrados;
+        const arrayDoEstado = [...transactionsDataAfterFilter];
+        const arrayDoEstadoFiltrado = [];
+        if (diasFiltrados.length > 0) {
+            for (const transaction of arrayDoEstado) {
+                if (diasFiltrados.includes(transaction.week_day)) {
+                    arrayDoEstadoFiltrado.push(transaction);
+                }
+            }
+        }
+        return arrayDoEstadoFiltrado;
     }
 
     function filtrarCategorias() {
@@ -126,25 +146,17 @@ const Filtros = ({
             categoriaFiltrada.push(categoria.nome);
         }
 
-        return categoriaFiltrada;
-    }
-
-    useEffect(() => {
-        async function loadTransactionsAfterFilter() {
-            try {
-            const response = await fetch('http://localhost:3333/transactions', {
-                method: 'GET'
-            });
-    
-            const data = await response.json();
-    
-            setTransactionsDataAfterFilter(data);
-
-            } catch (error) {
-            console.log(error);
+        const arrayDoEstado = [...transactionsDataAfterFilter];
+        const arrayDoEstadoFiltrado = [];
+        if (categoriaFiltrada.length > 0) {
+            for (const transaction of arrayDoEstado) {
+                if (categoriaFiltrada.includes(transaction.category)) {
+                    arrayDoEstadoFiltrado.push(transaction);
+                }
             }
         }
-    }, [filtroAplicado]);
+        return arrayDoEstadoFiltrado;
+    }
 
     function filtrarValor() {
         if (!valorMinimo && !valorMaximo) {
@@ -168,7 +180,47 @@ const Filtros = ({
 
             return valor >= (valorMinimo * 100) && valor <= (valorMaximo * 100) ? true : false;
         });
-        setTransactionsData(arrayDoEstadoFiltrado);
+        return arrayDoEstadoFiltrado;
+    }
+
+    function aplicarFiltros() {
+        const diasSelecionados = diaDaSemana.filter((dia) => dia.selecionado);
+        const categoriasSelecionadas = categorias.filter((categoria) => categoria.selecionado);
+
+        if (diasSelecionados.length === 0 && categoriasSelecionadas.length === 0 && !valorMinimo && !valorMaximo) {
+            return;
+        }
+
+        const diasFiltrados = filtrarDiasDaSemana();
+        const categoriasFiltradas = filtrarCategorias();
+        const valoresFiltrados = filtrarValor();
+
+        if (diasSelecionados.length === 0 && categoriasSelecionadas.length === 0) {
+            setTransactionsData(valoresFiltrados);
+        }
+
+        if (diasSelecionados.length === 0 && !valorMinimo && !valorMaximo) {
+            setTransactionsData(categoriasFiltradas);
+        }
+
+        if (categoriasSelecionadas.length === 0 && !valorMinimo && !valorMaximo) {
+            setTransactionsData(diasFiltrados);
+        }
+
+        const todosOsFiltros = diasFiltrados.concat(categoriasFiltradas, valoresFiltrados);
+        const todosOsFiltrosSemUndefined = todosOsFiltros.filter((item) => item);
+
+        const todosOsFiltrosID = []
+        const todosOsfiltrosSemRepeticoes = [];
+        for (const transaction of todosOsFiltrosSemUndefined) {
+            if (todosOsFiltrosID.indexOf(transaction.id) === -1) {
+                todosOsFiltrosID.push(transaction.id);
+                todosOsfiltrosSemRepeticoes.push(transaction);
+            }
+        };
+
+        setTransactionsData(todosOsfiltrosSemRepeticoes);
+        setFiltroAplicado(!filtroAplicado);
     }
 
     return (

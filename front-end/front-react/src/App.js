@@ -64,7 +64,6 @@ function App() {
             setModal={setModal}
             setEntradaOuSaida={setEntradaOuSaida}
             transactionsData={transactionsData}
-            loadTransaction={loadTransaction}
           />
         </div>
       </div>

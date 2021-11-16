@@ -93,10 +93,19 @@ const ListaTransacoes = ({
         setTransactionsData(estado => {
             const arrayDoEstado = [...estado];
             const arrayDoEstadoOrdenado = arrayDoEstado.sort((a, b) => {
+                let valorA = Number(a.value);
+                let valorB = Number(b.value);
+                if (a.type === 'debit') {
+                    valorA = valorA * -1;
+                }
+                if (b.type === 'debit') {
+                    valorB = valorB * -1;
+                }
+
                 if (crescente) {
-                    return Number(a.value) - Number(b.value);
+                    return valorA - valorB;
                 } else {
-                    return Number(b.value) - Number(a.value);
+                    return valorB - valorA;
                 }
             });
             return arrayDoEstadoOrdenado
